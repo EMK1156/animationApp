@@ -1,0 +1,31 @@
+<h3>放送時期を検索できます</h3>
+
+<!-- 検索フォームと検索ボタン -->
+<form>
+  <div>
+    <input type="search" #searchByTitle placeholder="タイトルを入力してください">
+    <button (click)="onSearchByTitle(searchByTitle.value)">検索</button>
+  </div>
+  <div>
+    <input type="search" #searchBySeason placeholder="放送時期を入力してください">
+    <button (click)="onSearchBySeason(searchBySeason.value)">検索</button>
+  </div>
+</form>
+
+<!-- 一覧表示ボタン -->
+<button (click)="onDisplayAllList()" *ngIf="!isDisplayAllList">一覧表示</button>
+<button (click)="onHiddenAllList()" *ngIf="isDisplayAllList">一覧非表示</button>
+
+<!-- 検索結果リセットボタン -->
+<button (click)="onReset()">リセット</button>
+
+<!-- 検索結果表示 -->
+<!-- <div id="resultZone" *ngFor="let animation of searchedList">
+  <p id="animation"><a href=animation.url>{{animation}}</a></p>
+</div> -->
+<div id="resultZone" *ngFor="let animation of searchedList">
+  <p id="animation"><a href={{animation.url}}>{{animation}}</a></p>
+</div>
+
+<!-- 一覧表示 -->
+<app-watched-list *ngIf="isDisplayAllList"></app-watched-list>
