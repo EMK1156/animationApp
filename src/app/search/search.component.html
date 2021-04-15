@@ -1,5 +1,7 @@
 <h3>放送時期を検索できます</h3>
 
+<button (click)="getAnimationsListFromDb()">まずはこちらをクリック</button>
+
 <!-- 検索フォームと検索ボタン -->
 <form>
   <div>
@@ -28,4 +30,4 @@
 </div>
 
 <!-- 一覧表示 -->
-<app-watched-list *ngIf="isDisplayAllList"></app-watched-list>
+<app-watched-list *ngIf="isDisplayAllList" [allAnimationsList]="allAnimationsList"></app-watched-list>
