@@ -10,7 +10,7 @@ export const animationsList = [
   {title:"とらドラ！", season:"2008冬", url: "https://anime.dmkt-sp.jp/animestore/ci_pc?workId=21437"},
   {title:"とある魔術の禁書目録", season:"2008冬", url: "https://anime.dmkt-sp.jp/animestore/ci_pc?workId=21437"},
   // 2009
-  {title:"みなみけ　おかえり", season:"2009冬", url: "https://anime.dmkt-sp.jp/animestore/ci_pc?workId=21437"},
+  {title:"みなみけ おかえり", season:"2009冬", url: "https://anime.dmkt-sp.jp/animestore/ci_pc?workId=21437"},
   {title:"涼宮ハルヒちゃんの憂鬱", season:"2009冬", url: "https://anime.dmkt-sp.jp/animestore/ci_pc?workId=21437"},
   {title:"けいおん！", season:"2009春", url: "https://anime.dmkt-sp.jp/animestore/ci_pc?workId=21437"},
   {title:"涼宮ハルヒの憂鬱", season:"2009春", url: "https://anime.dmkt-sp.jp/animestore/ci_pc?workId=21437"},

@@ -40,10 +40,11 @@ export class RegisterAnimationDataComponent implements OnInit {
       },
     }).then(function(response) {
       return response.json()
-    }).then(function (result) {
-      if (result === null) this.registerResult = true;
+    }).then(function (myJson) {
+      result = myJson;
     }).catch(function(error) {
       console.log(error);
     });
+    if (result === null) this.isRegisterResult = true;
   }
 }
