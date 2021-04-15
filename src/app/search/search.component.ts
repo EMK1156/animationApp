@@ -15,6 +15,7 @@ export class SearchComponent implements OnInit {
   public searchedList = [];
   public isDisplayAllList = false
   public allAnimationsList: AnimationsList = [];
+  public isAllowGetFromDb = true;
   
   constructor(private renderer: Renderer2) {}
 
@@ -35,6 +36,8 @@ export class SearchComponent implements OnInit {
     for (let i = 0; i < getAnimationsFromDb.Items.length; i++) {
       this.allAnimationsList.push(getAnimationsFromDb.Items[i]);
     }
+    // DBアクセスボタンを連打されないように、一度押したら非活性にする
+    this.isAllowGetFromDb = false;
   }
   
   // タイトルから検索
