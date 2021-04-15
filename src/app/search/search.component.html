@@ -1,6 +1,6 @@
 <h3>放送時期を検索できます</h3>
 
-<button (click)="getAnimationsListFromDb()" [disabled]="!isAllowGetFromDb">まずはこちらをクリック</button>
+<button (click)="getAnimationsListFromDb()" [hidden]="!firstClick">まずはこちらをクリック</button>
 
 <!-- 検索フォームと検索ボタン -->
 <form>
@@ -21,6 +21,8 @@
 <!-- 検索結果リセットボタン -->
 <button (click)="onReset()">リセット</button>
 
+<app-register-animation-data [hidden]="firstClick" [allAnimationsList]="allAnimationsList"></app-register-animation-data>
+
 <!-- 検索結果表示 -->
 <!-- <div id="resultZone" *ngFor="let animation of searchedList">
   <p id="animation"><a href=animation.url>{{animation}}</a></p>
@@ -31,5 +33,3 @@
 
 <!-- 一覧表示 -->
 <app-watched-list *ngIf="isDisplayAllList" [allAnimationsList]="allAnimationsList"></app-watched-list>
-
-<app-register-animation-data></app-register-animation-data>

@@ -6,4 +6,5 @@
         <input type="search" #season placeholder="放送時期を入力してください">
     </div>
     <button (click)="registerAnimationDataToDb(title.value, season.value)">登録</button>
+    <p *ngIf="isRegisterResult">登録成功</p>
   </form>
