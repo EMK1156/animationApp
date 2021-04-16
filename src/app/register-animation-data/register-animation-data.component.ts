@@ -19,7 +19,7 @@ export class RegisterAnimationDataComponent implements OnInit {
     // idを設定
     let latestId = 0;
     this.allAnimationsList.forEach(animation => {
-      if(Number(animation.id) > latestId) latestId = Number(animation.id);
+      if(animation.id > latestId) latestId = animation.id;
     });
     latestId += 1;
 
@@ -27,7 +27,7 @@ export class RegisterAnimationDataComponent implements OnInit {
     let result;
     const url = "https://9em5xmiqj0.execute-api.ap-northeast-1.amazonaws.com/develop/"
     const data = {
-      id: String(latestId),
+      id: latestId,
       title: title,
       season: season
     };

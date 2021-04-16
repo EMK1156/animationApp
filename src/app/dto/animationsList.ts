@@ -1,5 +1,5 @@
 export type AnimationsList = {
-    id: string,
+    id: number,
     title: string,
     season: string
 }[];
