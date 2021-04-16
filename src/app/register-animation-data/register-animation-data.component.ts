@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AnimationsList } from '../dto/animationsList';
 
 @Component({
@@ -8,12 +8,12 @@ import { AnimationsList } from '../dto/animationsList';
 })
 export class RegisterAnimationDataComponent implements OnInit {
   @Input() allAnimationsList: AnimationsList;
+  @Output() returnUpdatedAllAnimationsList: EventEmitter<AnimationsList> = new EventEmitter();
   constructor() { }
 
-  public isRegisterResult = false;
+  public isRegisterSuccess = false;
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   public async registerAnimationDataToDb(title: string, season: string) {
     // idを設定
@@ -45,6 +45,10 @@ export class RegisterAnimationDataComponent implements OnInit {
     }).catch(function(error) {
       console.log(error);
     });
-    if (result === null) this.isRegisterResult = true;
+    if (result === null) alert('登録成功');
+
+    // 登録したデータをアニメリストに追加してsearchComponentに返す
+    this.allAnimationsList.push(data);
+    this.returnUpdatedAllAnimationsList.emit(this.allAnimationsList);
   }
 }

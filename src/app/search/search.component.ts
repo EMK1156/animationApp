@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit, Renderer2 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { AnimationsList } from '../dto/animationsList';
-import { animationsList } from '../searchList'
 
 @Component({
   selector: 'app-search',
@@ -14,19 +13,12 @@ export class SearchComponent implements OnInit {
   form = new FormControl();
 
   public searchedList = [];
-  public isDisplayAllList = false
   public allAnimationsList: AnimationsList = [];
   public firstClick = true;
-  public isAllowGetFromDb = true;
-  // TODO: 後で消す
-  public searchList;
   
   constructor(private renderer: Renderer2) {}
 
-  ngOnInit(): void {
-    // TODO: 後で消す
-    this.searchList = animationsList;
-  }
+  ngOnInit(): void {}
 
   // DBから一覧取得
   public async getAnimationsListFromDb(): Promise<void> {
@@ -56,8 +48,7 @@ export class SearchComponent implements OnInit {
     // 検索結果リストを初期化
     this.searchedList = [];
     // 検索結果表示
-    // TODO: 後で戻す
-    this.searchList.forEach(animation => {
+    this.allAnimationsList.forEach(animation => {
       if (animation.title.indexOf(keyword) != -1) {
         let searchedAnimation = `${animation.title}：${animation.season}`;
         this.searchedList.push(searchedAnimation);
@@ -70,7 +61,7 @@ export class SearchComponent implements OnInit {
     // 検索結果リストを初期化
     this.searchedList = [];
     // 検索結果表示
-    this.searchList.forEach(animation => {
+    this.allAnimationsList.forEach(animation => {
       if (animation.season.indexOf(keyword) != -1) {
         let searchedAnimation = `${animation.title}：${animation.season}`;
         this.searchedList.push(searchedAnimation);
@@ -84,4 +75,8 @@ export class SearchComponent implements OnInit {
     this.searchedList = [];
   }
 
+  // 登録後にregisterAnimationDataComponentからアニメリストを受け取る
+  public receiveAnimationListFromChild(updatedAllAnimationsList: AnimationsList) {
+    this.allAnimationsList = updatedAllAnimationsList;
+  }
 }
