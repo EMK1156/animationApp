@@ -1,35 +1,47 @@
-<h3>放送時期を検索できます</h3>
+<!-- CSS only -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-<button (click)="getAnimationsListFromDb()" [hidden]="!firstClick">まずはこちらをクリック</button>
+<!-- JS, Popper.js, and jQuery -->
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
-<!-- 検索フォームと検索ボタン -->
-<form>
-  <div>
-    <input type="search" #searchByTitle placeholder="タイトルを入力してください">
-    <button (click)="onSearchByTitle(searchByTitle.value)">検索</button>
-  </div>
-  <div>
-    <input type="search" #searchBySeason placeholder="放送時期を入力してください">
-    <button (click)="onSearchBySeason(searchBySeason.value)">検索</button>
-  </div>
-</form>
+<p class="h2 font-weight-bold mt-5 mb-5">アニメ記録くん</p>
 
-<!-- 一覧表示ボタン -->
-<button (click)="onDisplayAllList()" *ngIf="!isDisplayAllList">一覧表示</button>
-<button (click)="onHiddenAllList()" *ngIf="isDisplayAllList">一覧非表示</button>
-
-<!-- 検索結果リセットボタン -->
-<button (click)="onReset()">リセット</button>
-
-<app-register-animation-data [hidden]="firstClick" [allAnimationsList]="allAnimationsList"></app-register-animation-data>
-
-<!-- 検索結果表示 -->
-<!-- <div id="resultZone" *ngFor="let animation of searchedList">
-  <p id="animation"><a href=animation.url>{{animation}}</a></p>
-</div> -->
-<div id="resultZone" *ngFor="let animation of searchedList">
-  <p id="animation"><a href={{animation.url}}>{{animation}}</a></p>
+<div>
+  <button id="firstClick" type="button" class="btn btn-primary mb-4" (click)="getAnimationsListFromDb()" [disabled]="!firstClick">まずはこちらをクリック</button>
 </div>
 
-<!-- 一覧表示 -->
-<app-watched-list *ngIf="isDisplayAllList" [allAnimationsList]="allAnimationsList"></app-watched-list>
+<!-- 検索フォームと検索ボタン -->
+<p>
+  <span class="h5 font-weight-bold">タイトル/放送時期で視聴済アニメを検索できます</span><br>
+  <span>※何も入力しない場合、一覧が表示されます</span>
+</p>
+<form>
+  <div class="mb-3">
+    <input type="search" class="form-control col-sm-5" #searchByTitle placeholder="タイトルを入力してください">
+    <button type="button" class="btn btn-primary" (click)="onSearchByTitle(searchByTitle.value)">検索</button>
+  </div>
+
+  <div class="mb-2">
+    <input type="search" class="form-control col-sm-5" #searchBySeason placeholder="放送時期を入力してください">
+    <button type="button" class="btn btn-primary" (click)="onSearchBySeason(searchBySeason.value)">検索</button>
+    <!-- 検索結果リセットボタン -->
+  </div>
+  <button (click)="onReset()" type="button" class="btn btn-secondary mb-5">リセット</button>
+</form>
+
+<div>
+  <app-register-animation-data [allAnimationsList]="allAnimationsList"></app-register-animation-data>
+  <!-- <app-register-animation-data [hidden]="firstClick" [allAnimationsList]="allAnimationsList"></app-register-animation-data> -->
+  
+  <!-- 検索結果表示 -->
+  <div *ngFor="let animation of searchedList">
+    <p>{{animation}}</p>
+  </div>
+
+  <!-- DアニメストアのURL使ってリンクにする場合使う -->
+  <!-- <div id="resultZone" *ngFor="let animation of searchedList">
+    <p id="animation"><a href={{animation.url}}>{{animation}}</a></p>
+  </div> -->
+</div>

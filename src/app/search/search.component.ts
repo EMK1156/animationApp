@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit, Renderer2 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { AnimationsList } from '../dto/animationsList';
+import { animationsList } from '../searchList'
 
 @Component({
   selector: 'app-search',
@@ -17,10 +18,15 @@ export class SearchComponent implements OnInit {
   public allAnimationsList: AnimationsList = [];
   public firstClick = true;
   public isAllowGetFromDb = true;
+  // TODO: 後で消す
+  public searchList;
   
   constructor(private renderer: Renderer2) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // TODO: 後で消す
+    this.searchList = animationsList;
+  }
 
   // DBから一覧取得
   public async getAnimationsListFromDb(): Promise<void> {
@@ -43,12 +49,15 @@ export class SearchComponent implements OnInit {
   
   // タイトルから検索
   public onSearchByTitle(keyword: string) {
-    let parent = this.renderer.parentNode('resultZone');
-    this.renderer.removeChild(parent, 'a');
+    // DアニメストアのURL使ってリンクにする場合使う
+    // let parent = this.renderer.parentNode('resultZone');
+    // this.renderer.removeChild(parent, 'a');
+
     // 検索結果リストを初期化
     this.searchedList = [];
     // 検索結果表示
-    this.allAnimationsList.forEach(animation => {
+    // TODO: 後で戻す
+    this.searchList.forEach(animation => {
       if (animation.title.indexOf(keyword) != -1) {
         let searchedAnimation = `${animation.title}：${animation.season}`;
         this.searchedList.push(searchedAnimation);
@@ -61,21 +70,13 @@ export class SearchComponent implements OnInit {
     // 検索結果リストを初期化
     this.searchedList = [];
     // 検索結果表示
-    this.allAnimationsList.forEach(animation => {
+    this.searchList.forEach(animation => {
       if (animation.season.indexOf(keyword) != -1) {
         let searchedAnimation = `${animation.title}：${animation.season}`;
         this.searchedList.push(searchedAnimation);
       }
     });
     return;
-  }
-
-  // 一覧表示を制御
-  public onDisplayAllList() {
-    this.isDisplayAllList = true;
-  }
-  public onHiddenAllList() {
-    this.isDisplayAllList = false;
   }
   
   // 検索結果をリセット
