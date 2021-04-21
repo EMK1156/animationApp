@@ -1,6 +1,7 @@
-import { Component, Inject, OnInit, Renderer2 } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { AnimationsList } from '../dto/animationsList';
+import { Component, Input, OnInit } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
+import { AnimationsList } from '../shared/animationsList';
+import { newAnimationsList } from '../searchList';
 
 @Component({
   selector: 'app-search',
@@ -9,70 +10,47 @@ import { AnimationsList } from '../dto/animationsList';
 })
 
 export class SearchComponent implements OnInit {
+  @Input() allAnimationsList: AnimationsList;
 
-  form = new FormControl();
+  public searchedList: AnimationsList = [];
+  public isSearch = false;
+  public dataSource;
 
-  public searchedList = [];
-  public allAnimationsList: AnimationsList = [];
-  public firstClick = true;
+  columnsToDisplay = ['title', 'season', 'category', 'part', 'recorder'];
   
-  constructor(private renderer: Renderer2) {}
+  constructor() {}
 
   ngOnInit(): void {}
-
-  // DBから一覧取得
-  public async getAnimationsListFromDb(): Promise<void> {
-    let getAnimationsFromDb;
-    await fetch("https://9em5xmiqj0.execute-api.ap-northeast-1.amazonaws.com/develop")
-      .then(function(response) {
-        return response.json()
-      }).then(function (myJson) {
-        getAnimationsFromDb = myJson;
-      }).catch(function(error) {
-        console.log(error);
-      });
-    
-    for (let i = 0; i < getAnimationsFromDb.Items.length; i++) {
-      this.allAnimationsList.push(getAnimationsFromDb.Items[i]);
-    }
-    // DBアクセスボタンを連打されないように、一度押したら非活性にする
-    this.firstClick = false;
-  }
   
   // タイトルから検索
-  public onSearchByTitle(keyword: string) {
-    // DアニメストアのURL使ってリンクにする場合使う
-    // let parent = this.renderer.parentNode('resultZone');
-    // this.renderer.removeChild(parent, 'a');
+  public onSearch(title?: string, season?: string, category?: string, part?: string, recorder?: string) {
+    this.isSearch = true;
+    // 検索結果リストを初期化
+    let filteredAnimations = this.allAnimationsList
 
-    // 検索結果リストを初期化
-    this.searchedList = [];
-    // 検索結果表示
-    this.allAnimationsList.forEach(animation => {
-      if (animation.title.indexOf(keyword) != -1) {
-        let searchedAnimation = `${animation.title}：${animation.season}`;
-        this.searchedList.push(searchedAnimation);
-      }
-    });
-  }
-  
-  // 放送時期から検索
-  public onSearchBySeason(keyword: string) {
-    // 検索結果リストを初期化
-    this.searchedList = [];
-    // 検索結果表示
-    this.allAnimationsList.forEach(animation => {
-      if (animation.season.indexOf(keyword) != -1) {
-        let searchedAnimation = `${animation.title}：${animation.season}`;
-        this.searchedList.push(searchedAnimation);
-      }
-    });
-    return;
+    // 検索条件から絞り込み
+    if (title){
+      filteredAnimations = filteredAnimations.filter(animation => animation.title.indexOf(title) != -1);
+    }
+    if (season){
+      filteredAnimations = filteredAnimations.filter(animation => animation.season.indexOf(season) != -1);
+    }
+    if (category){
+      filteredAnimations = filteredAnimations.filter(animation => animation.category.indexOf(category) != -1);
+    }
+    if (part){
+      filteredAnimations = filteredAnimations.filter(animation => animation.part === part);
+    }
+    if (recorder){
+      filteredAnimations = filteredAnimations.filter(animation => animation.recorder === recorder);
+    }
+    // 検索結果をテーブル用のデータに変換
+    this.dataSource = new MatTableDataSource(filteredAnimations);
   }
   
   // 検索結果をリセット
   public onReset() {
-    this.searchedList = [];
+    this.isSearch = false;
   }
 
   // 登録後にregisterAnimationDataComponentからアニメリストを受け取る

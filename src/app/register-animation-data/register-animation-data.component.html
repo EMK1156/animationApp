@@ -1,8 +1,14 @@
 <p class="h5 font-weight-bold">視聴済アニメのタイトル/放送時期を記録できます</p>
 <form>
-  <div>
-    <input type="search" class="form-control col-sm-5 mb-1" #title placeholder="タイトルを入力してください">
-    <input type="search" class="form-control col-sm-5" #season placeholder="放送時期を入力してください">
-  </div>
-  <button type="button" class="btn btn-primary mb-5" (click)="registerAnimationDataToDb(title.value, season.value)">登録</button>
+  <input type="search" class="form-control col-sm-5 mb-1" id="title" #title placeholder="タイトル">
+    <input type="search" class="form-control col-sm-5 mb-1" id="season" #season placeholder="放送時期">
+    <input type="search" class="form-control col-sm-5 mb-1" id="category" #category placeholder="ジャンル">
+    <input type="search" class="form-control col-sm-5 mb-1" id="part" #part placeholder="話数">
+    <select class="form-control col-sm-5" id="recorder" #recorder aria-placeholder="記録者">
+      <option value='' disabled selected style='display:none;'>記録者</option>
+      <option value="sota">sota</option>
+      <option value="nao">nao</option>
+    </select>
+
+    <button type="button" class="btn btn-primary mb-5" (click)="registerAnimationDataToDb(title.value, season.value, category.value, part.value, recorder.value)">登録</button>
 </form>

@@ -1,45 +1,55 @@
-<!-- CSS only -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<!-- 検索フォームと検索ボタン -->
+<p>
+  <span class="h5 font-weight-bold">タイトル/放送時期で視聴済アニメを検索できます</span><br>
+  <span>※何も入力せず検索すると一覧が表示されます</span>
+</p>
+<form>
+  <div class="mb-3">
+    <input type="search" class="form-control col-sm-5 mb-1" id="title" #title placeholder="タイトル">
+    <input type="search" class="form-control col-sm-5 mb-1" id="season" #season placeholder="放送時期">
+    <input type="search" class="form-control col-sm-5 mb-1" id="category" #category placeholder="ジャンル">
+    <input type="search" class="form-control col-sm-5 mb-1" id="part" #part placeholder="話数">
+    <select class="form-control col-sm-5" id="recorder" #recorder aria-placeholder="記録者">
+      <option value='' disabled selected style='display:none;'>記録者</option>
+      <option value="sota">sota</option>
+      <option value="nao">nao</option>
+    </select>
 
-<!-- JS, Popper.js, and jQuery -->
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-
-<div class="ml-5">
-  <p class="h2 font-weight-bold mt-5 mb-5">アニメ記録くん</p>
-
-  <button id="firstClick" type="button" class="btn btn-warning mb-5" (click)="getAnimationsListFromDb()" [disabled]="!firstClick">まずはこちらをクリック</button>
-  
-  <!-- 検索フォームと検索ボタン -->
-  <p>
-    <span class="h5 font-weight-bold">タイトル/放送時期で視聴済アニメを検索できます</span><br>
-    <span>※何も入力しない場合、一覧が表示されます</span>
-  </p>
-  <form>
-    <div class="mb-3">
-      <input type="search" class="form-control col-sm-5" #searchByTitle placeholder="タイトルを入力してください">
-      <button type="button" class="btn btn-primary" (click)="onSearchByTitle(searchByTitle.value)">検索</button>
+    <button type="submit" class="btn btn-primary" (click)="onSearch(title.value, season.value, category.value, part.value, recorder.value)">
+      <i class="fas fa-search"></i>
+    </button>
     </div>
-  
-    <div class="mb-3">
-      <input type="search" class="form-control col-sm-5" #searchBySeason placeholder="放送時期を入力してください">
-      <button type="button" class="btn btn-primary" (click)="onSearchBySeason(searchBySeason.value)">検索</button>
-    </div>
-    <!-- 検索結果リセットボタン -->
-    <button (click)="onReset()" type="button" class="btn btn-secondary mb-5">リセット</button>
-  </form>
-  
-  <!-- 登録用コンポーネント -->
-  <app-register-animation-data [allAnimationsList]="allAnimationsList" (returnUpdatedAllAnimationsList)="receiveAnimationListFromChild($event)"></app-register-animation-data>
-  
-  <!-- 検索結果表示 -->
-  <div *ngFor="let animation of searchedList">
-    <p>{{animation}}</p>
-  </div>
+  <!-- 検索結果リセットボタン -->
+  <button (click)="onReset()" type="button" class="btn btn-secondary mb-5">リセット</button>
+</form>
 
-  <!-- DアニメストアのURL使ってリンクにする場合使う -->
-  <!-- <div id="resultZone" *ngFor="let animation of searchedList">
-    <p id="animation"><a href={{animation.url}}>{{animation}}</a></p>
-  </div> -->
-</div>
+<!-- 検索結果表示テーブル -->
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8 mb-5" *ngIf="isSearch">
+  <ng-container matColumnDef="title">
+    <th mat-header-cell *matHeaderCellDef> タイトル </th>
+    <td mat-cell *matCellDef="let animation">{{animation.title}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="season">
+    <th mat-header-cell *matHeaderCellDef> 放送時期 </th>
+    <td mat-cell *matCellDef="let animation">{{animation.season}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="category">
+    <th mat-header-cell *matHeaderCellDef> ジャンル </th>
+    <td mat-cell *matCellDef="let animation">{{animation.category}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="part">
+    <th mat-header-cell *matHeaderCellDef> 話数 </th>
+    <td mat-cell *matCellDef="let animation">{{animation.part}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="recorder">
+    <th mat-header-cell *matHeaderCellDef> 記録者 </th>
+    <td mat-cell *matCellDef="let animation">{{animation.recorder}}</td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+  <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
+</table>

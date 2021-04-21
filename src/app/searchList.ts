@@ -1,3 +1,6 @@
+export const newAnimationsList = [
+  {id: 1, title:"ひだまりスケッチ", season:"2007冬", category: "日常", part: "12", recorder: "sota"},
+]
 export const animationsList = [
   // urlは全部ひだまりスケッチ
   // 2007
